@@ -10,7 +10,7 @@ const Router = () => {
 				<Route path="/" element={<AppLayout />}>
 					{routesFile.map(
 						({
-							isAuthenticatedRoute,
+							isAuthenticatedRoute = true,
 							key,
 							element: Component,
 							childrenRoutes = [],

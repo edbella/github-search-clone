@@ -1,53 +1,47 @@
-import { useQuery } from "@apollo/client";
-import { useState, useEffect } from "react";
-import { GET_USER_DETAILS } from "../../config/queries";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AvatarHeader from "../../reusables/AvatarHeader";
-import Loader from "../../reusables/Loader";
-import GitHubMark from "../../assets/images/GitHub-Mark.png";
-import GitHubLogo from "../../assets/images/GitHub-Logo.png";
-import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
+import SearchBar from "../../reusables/SearchBar";
+import APP_PATHS from "../../config/paths.routes";
+import GithubMark from "../../reusables/GithubMark";
+import Header from "../../reusables/Header";
 
 const SearchHome = () => {
-	const { loading, error, data } = useQuery(GET_USER_DETAILS);
+	const [searchValue, setSearchValue] = useState("");
+	const navigate = useNavigate();
 
-	// Run on mount
-	useEffect(() => {
-		// Update document title
-		document.title = "Home";
-	}, []);
+	// Handle onchange event
+	const handleChange = ({ target: { value } }) => setSearchValue(value);
 
-	if (loading) {
-		return <Loader />;
-	}
+	// Handle search submission
+	const handleSearchSubmit = (event) => {
+		event.preventDefault();
 
-	console.log({ data, error });
+		// If search value
+		if (searchValue) {
+			navigate(APP_PATHS.SEARCH_RESULTS, { state: { search: searchValue } });
+		}
+	};
 
 	return (
 		<div className="p-5 max-w-screen-2xl mx-auto gap-36 flex flex-col">
-			<AvatarHeader
-				name="John Doe"
-				imgUrl="https://avatars.githubusercontent.com/u/30025478?u=823876381611b3db548c894cac1d6f0ddb592232&v=4"
-			/>
+			<Header />
 
-			<form className="flex flex-col gap-6 items-center">
-				<div className="flex items-center justify-center gap-1 pointer-events-none">
-					<img
-						alt="Github Mark"
-						src={GitHubMark}
-						className="w-16 h-16 object-cover"
-					/>
-					<img alt="Github Logo" src={GitHubLogo} className="h-14" />
-				</div>
+			<form
+				className="flex flex-col gap-6 items-center"
+				onSubmit={handleSearchSubmit}
+			>
+				<GithubMark
+					parentClassName="justify-center pointer-events-none"
+					markClassName="w-16 h-16"
+					logoClassName="h-14"
+				/>
 
-				<div className="relative w-full max-w-lg ">
-					<input
-						type="text"
-						className="w-full py-2.5 px-3 pr-10 align-text-bottom rounded-full border border-gray-400 font-openSans bg-white !outline-none focus:border-gray-700"
-					/>
-					<SearchIcon className="absolute top-[50%] right-4 -translate-y-[50%] text-2xl text-stone-500 pointer-events-none" />
-				</div>
-
-				<button className="text-white bg-[#5e5e5e] rounded min-w-[180px] px-4 py-2 font-semibold font-openSans">
+				<SearchBar onChange={handleChange} value={searchValue} required />
+				<button
+					className="text-white bg-[#5e5e5e] rounded min-w-[180px] px-4 py-2 font-semibold font-openSans"
+					type="submit"
+				>
 					Search Github
 				</button>
 			</form>

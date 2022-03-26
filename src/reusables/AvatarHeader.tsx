@@ -1,18 +1,31 @@
+import { useQuery } from "@apollo/client";
 import {ReactComponent as ArrowDownIcon} from "../assets/icons/arrow-down.svg";
+import { GET_USER_DETAILS } from "../config/queries";
+import Loader from "./Loader";
+import { AvatarHeaderProps } from "./types";
 
-const AvatarHeader = ({ imgUrl, name }: { imgUrl: string; name: string }) => {
+const AvatarHeader = () => {
+	const { loading, data } = useQuery(GET_USER_DETAILS);
+
+	if (loading) {
+		return <Loader />;
+	}
+
+	const name = data?.viewer?.name;
+	const avatarUrl = data?.viewer?.avatarUrl
+
 	return (
-		<div className="flex gap-2 items-center max-w-[max-content] ml-auto">
+		<button className="flex gap-2 items-center max-w-[max-content] ml-auto">
 			<img
 				alt={name}
-				src={imgUrl}
+				src={avatarUrl}
 				className="w-12 h-12 object-cover rounded-full"
 			/>
 			<p className="font-openSans font-medium">{name}</p>
 			<div className="text-stone-900">
 				<ArrowDownIcon />
 			</div>
-		</div>
+		</button>
 	);
 };
 

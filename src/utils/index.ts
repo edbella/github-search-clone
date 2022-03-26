@@ -1,7 +1,7 @@
 export const isEmpty = (item: string | number | Object | any[]): boolean => {
   // Test case for string input
 	if (typeof item === "string") {
-		return !!item.length;
+		return item.length === 0;
 	}
 
   // Test case for object
@@ -10,16 +10,16 @@ export const isEmpty = (item: string | number | Object | any[]): boolean => {
     if (item) {
       // Test case for array
       if (Array.isArray(item)) {
-        return !!item.length;
+        return item.length === 0;
       }
 
       // Test case for object {}
       const objectKeys = Object.keys(item);
 
-      return !!objectKeys.length;
+      return objectKeys.length === 0;
     }
   }
   
   // Test case for any other type
-  return !!item
+  return !item
 };

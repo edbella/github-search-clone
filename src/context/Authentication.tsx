@@ -18,8 +18,11 @@ export const AuthenticationContextProvider = ({
 }: {
 	children: ReactNode;
 }) => {
-  const [authState, setAuthState] = useState<AuthState>({});
-  const [isValidating, setValidationStatus] = useState(false);
+	const [authState, setAuthState] = useState<AuthState>({
+		userData: {},
+		isAuthenticated: false
+	});
+  const [isValidating, setValidationStatus] = useState(true);
 
 	// Update auth state
 	const updateAuthState = ({ userData, isAuthenticated }: AuthState): void => {
@@ -43,14 +46,15 @@ export const AuthenticationContextProvider = ({
 
 	// Check existing user
   const checkExistingUser = () => {
-    // Set validation status
-    setValidationStatus(true);
-
 		const isAuthenticated = JSON.parse(localStorage.getItem("isAuthenticated"));
 		const userData = JSON.parse(localStorage.getItem("userData"));
 
-    // Update state
-    updateAuthState({ userData, isAuthenticated });
+		if (!isEmpty(userData)) {
+			// Update state
+			updateAuthState({ userData, isAuthenticated });
+		} else {
+			logoutUser()
+		}
     
     // Set validation status
     setValidationStatus(false);

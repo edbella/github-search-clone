@@ -35,7 +35,7 @@ const SignIn = () => {
     };
     
      // Disable loading state
-     setIsLoading(false);
+		setIsLoading(false);
 
 		// Save token details to state and authenticate user
 		updateAuthState({ userData: payload, isAuthenticated: true });
