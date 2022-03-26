@@ -62,9 +62,6 @@ const SearchResults = () => {
 			// Run search on existing value
 			searchGithubRepos({ variables: { query: `${query} sort:updated-desc` } });
 			searchGithubUsers({ variables: { query: `${query} sort:updated-desc` } });
-
-			// Reset search params
-			setSearchParams("");
 		}
 	}, []);
 
