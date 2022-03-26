@@ -1,0 +1,42 @@
+.rc-pagination {
+  font-size: 1rem;
+}
+
+.rc-pagination-item {
+  color: #bebebe;
+  background-color: transparent;
+  border: none
+}
+
+.rc-pagination-item a, .rc-pagination-item-link::after {
+  color: #bebebe;
+}
+
+.rc-pagination-item-active a, .rc-pagination-item a:hover {
+  color: #000 !important;
+}
+
+.rc-pagination-prev {
+  background-color: #000000;
+  border-radius: 8px;
+  padding: 8px;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+}
+
+.rc-pagination-next {
+  background-color: #000000;
+  border-radius: 8px;
+  padding: 8px;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+}
+
+.rc-pagination-disabled {
+  background-color: #ececec;
+  color: #bebebe;
+}

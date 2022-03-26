@@ -1,18 +1,27 @@
 import { useLazyQuery } from "@apollo/client";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, ChangeEventHandler } from "react";
-import { GET_USER_DETAILS } from "../../config/queries";
-import Loader from "../../reusables/Loader";
-import APP_PATHS from "../../config/paths.routes";
+import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { SEARCH_GITHUB_REPOS, SEARCH_GITHUB_USERS } from "../../config/queries";
 import LoadingSignal from "../../reusables/LoadingSignal";
 import Header from "../../reusables/Header";
+import SearchGroup from "./components/SearchGroup";
+import { searchGroupResult } from "./constants";
+import SearchList from "./components/SearchResultList";
 
 const SearchResults = () => {
-	const [searchGithub, { loading, error, data }] =
-		useLazyQuery(GET_USER_DETAILS);
-	const { state } = useLocation();
+	/* Queries */
+	const [
+		searchGithubUsers,
+		{ loading: loadingUserResult, error: userError, data: userResult },
+	] = useLazyQuery(SEARCH_GITHUB_USERS);
+	const [
+		searchGithubRepos,
+		{ loading: loadingRepoResult, error: repoError, data: repoResult },
+	] = useLazyQuery(SEARCH_GITHUB_REPOS);
+
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchValue, setSearchValue] = useState("");
-	const navigate = useNavigate();
+	const [activeView, setActiveView] = useState(() => searchGroupResult[0]?.key);
 
 	// Handle onchange event
 	const handleChange = (event) => {
@@ -26,7 +35,15 @@ const SearchResults = () => {
 
 		// If search value
 		if (searchValue) {
-			navigate(APP_PATHS.SEARCH_RESULTS, { state: { search: searchValue } });
+			// Run search on existing value
+			searchGithubRepos({
+				variables: { query: `${searchValue} sort:updated-desc` },
+			});
+			searchGithubUsers({
+				variables: { query: `${searchValue} sort:updated-desc` },
+			});
+
+			setSearchParams({search: searchValue})
 		}
 	};
 
@@ -36,23 +53,32 @@ const SearchResults = () => {
 		document.title = "Search Results";
 
 		// Check if search data exists
-		const existingSearchValue = (state as { search: string })?.search;
+		const query = searchParams.get("search");
 
-		if (existingSearchValue) {
+		if (query) {
 			// Set it to current state
-			setSearchValue(existingSearchValue);
+			setSearchValue(query);
 
 			// Run search on existing value
-			searchGithub({ variables: { existingSearchValue } });
+			searchGithubRepos({ variables: { query: `${query} sort:updated-desc` } });
+			searchGithubUsers({ variables: { query: `${query} sort:updated-desc` } });
+
+			// Reset search params
+			setSearchParams("");
 		}
 	}, []);
 
-	if (loading) {
-		return <Loader />;
-	}
+	// Define loading instance
+	const loading = loadingRepoResult || loadingUserResult;
+
+	// Define error state
+	const error = repoError || userError;
+
+	// Combine results
+	const graphqlResult = { repoResult, userResult };
 
 	return (
-		<div className="gap-8 flex flex-col bg-slate-100 min-h-screen">
+		<div className="gap-8 flex flex-col bg-[#f9fafa] min-h-screen">
 			{/* Header */}
 			<Header
 				handleSearchSubmit={handleSearchSubmit}
@@ -61,13 +87,37 @@ const SearchResults = () => {
 			/>
 
 			{/* Content */}
-			<div className="max-w-xl mx-auto">
+			<div className="max-w-screen-xl mx-auto w-full">
+				{/* Handle loading state */}
 				{loading ? (
-					<div className="bg-slate-50 h-screen flex flex-col justify-center items-center fixed left-0 top-0 w-screen overflow-hidden z-[99999]">
+					<div className="flex flex-col justify-center items-center min-h-[200px]">
 						<LoadingSignal />
 					</div>
 				) : (
-					<>Hi</>
+						<>
+							{/* Handle error state */}
+						{error ? (
+							<div className="bg-white min-h-[250px] flex flex-col justify-center items-center ">
+								<p className="font-openSans text-base text-center">
+									Error fetching search results. Please try again
+								</p>
+							</div>
+						) : (
+							<div className="grid sm:grid-cols-4 gap-6 items-start relative">
+								<SearchGroup
+									graphqlResult={graphqlResult}
+									currentView={activeView}
+									handleChange={setActiveView}
+								/>
+
+								<SearchList
+									graphqlResult={graphqlResult}
+									currentView={activeView}
+									handleChange={setActiveView}
+								/>
+							</div>
+						)}
+					</>
 				)}
 			</div>
 		</div>

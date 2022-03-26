@@ -1,3 +1,10 @@
+import dayjs from 'dayjs';
+import RelativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(RelativeTime);
+
+export const dayJs = dayjs;
+
 export const isEmpty = (item: string | number | Object | any[]): boolean => {
   // Test case for string input
 	if (typeof item === "string") {
@@ -23,3 +30,13 @@ export const isEmpty = (item: string | number | Object | any[]): boolean => {
   // Test case for any other type
   return !item
 };
+
+ export const formatNumber = (number?: string | number): string =>
+ new Intl.NumberFormat(window.navigator.language).format(Number(number));
+
+export const formatNumberToShortString = (number?: string | number, options = {}): string => {
+ const formatter = new Intl.NumberFormat('en', { notation: 'compact', ...options });
+
+ return formatter.format(Number(number) ?? 0);
+};
+

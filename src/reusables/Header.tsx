@@ -25,7 +25,7 @@ const Header = ({
 				{isHome ? (
 						<AvatarHeader />
 				) : (
-					<div className="p-5 bg-white drop-shadow-md">
+					<div className="p-5 bg-white drop-shadow sticky top-0 z-[999999]">
 						<div className=" max-w-screen-2xl mx-auto grid grid-cols-3 gap-3">
 							<GithubMark />
 

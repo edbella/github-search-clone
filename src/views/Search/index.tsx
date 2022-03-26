@@ -19,7 +19,7 @@ const SearchHome = () => {
 
 		// If search value
 		if (searchValue) {
-			navigate(APP_PATHS.SEARCH_RESULTS, { state: { search: searchValue } });
+			navigate(`${APP_PATHS.SEARCH_RESULTS}?search=${searchValue}`);
 		}
 	};
 
