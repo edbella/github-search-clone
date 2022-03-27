@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "types": ["vite-plugin-svgr/client", "jest", "@testing-library/jest-dom", "node"]
   },
   "include": ["src", "__tests__"],
@@ -21,7 +21,6 @@
     "node_modules",
     "vite.config.ts"
   ],
-  // "types": ["@types/node"],
   "paths": {
     "test-utils": ["./src/test-utils"]
   },
