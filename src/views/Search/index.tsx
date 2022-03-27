@@ -37,7 +37,7 @@ const SearchHome = () => {
 					logoClassName="h-14"
 				/>
 
-				<SearchBar onChange={handleChange} value={searchValue} required />
+				<SearchBar onChange={handleChange} value={searchValue} placeholder="" required />
 				<button
 					className="text-white bg-[#5e5e5e] rounded min-w-[180px] px-4 py-2 font-semibold font-openSans"
 					type="submit"

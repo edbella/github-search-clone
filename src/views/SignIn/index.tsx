@@ -64,7 +64,7 @@ const SignIn = () => {
     <div className="h-screen p-4 bg-white flex flex-col gap-1 justify-center items-center">
       {isLoading && <Loader />}
 			<LoginGithub
-				clientId={import.meta.env.VITE_GITHUB_CLIENT_ID}
+				clientId={process.env.GITHUB_CLIENT_ID}
 				scope="read:user,repo"
 				onSuccess={handleSuccess}
 				onFailure={handleFailure}

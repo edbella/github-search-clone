@@ -31,12 +31,18 @@ export const isEmpty = (item: string | number | Object | any[]): boolean => {
   return !item
 };
 
- export const formatNumber = (number?: string | number): string =>
- new Intl.NumberFormat(window.navigator.language).format(Number(number));
+export const formatNumber = (number?: string | number): string => {
+  const formatter = new Intl.NumberFormat(window.navigator.language);
+  const value = Number(number);
+  
+  return formatter.format(Number.isNaN(value) ? 0 : value);
+ }
 
 export const formatNumberToShortString = (number?: string | number, options = {}): string => {
- const formatter = new Intl.NumberFormat('en', { notation: 'compact', ...options });
+  const formatter = new Intl.NumberFormat('en', { notation: 'compact', ...options });
+  
+  const value = Number(number);
 
- return formatter.format(Number(number) ?? 0);
+ return formatter.format(Number.isNaN(value) ? 0 : value);
 };
 

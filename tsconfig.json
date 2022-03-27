@@ -14,14 +14,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite-plugin-svgr/client", "jest", "@testing-library/jest-dom"]
+    "types": ["vite-plugin-svgr/client", "jest", "@testing-library/jest-dom", "node"]
   },
-  "include": ["src"],
+  "include": ["src", "__tests__"],
   "exclude": [
     "node_modules",
-    "./vite.config.ts"
+    "vite.config.ts"
   ],
-  // "types": ["@types/jest"],
+  // "types": ["@types/node"],
   "paths": {
     "test-utils": ["./src/test-utils"]
   },

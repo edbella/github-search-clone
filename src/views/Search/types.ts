@@ -22,7 +22,7 @@ export type RepoResultEdge = {
 		description: string;
 		stargazers: Stargazers;
 		licenseInfo: LicenseInfo;
-		updatedAt: Date;
+		updatedAt: string;
     primaryLanguage: Languages;
     id: string;
 	};
