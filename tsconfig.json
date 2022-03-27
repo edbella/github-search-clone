@@ -14,12 +14,16 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite-plugin-svgr/client"]
+    "types": ["vite-plugin-svgr/client", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src"],
   "exclude": [
     "node_modules",
     "./vite.config.ts"
   ],
+  // "types": ["@types/jest"],
+  "paths": {
+    "test-utils": ["./src/test-utils"]
+  },
   "references": [{ "path": "./tsconfig.node.json" }]
 }
