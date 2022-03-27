@@ -44,7 +44,7 @@ Using npm
 
 After running any of the commands, the app will start up on http://localhost:3000
 
-### Running Tests
+#### Running Tests
 
 ```bash
   yarn test
